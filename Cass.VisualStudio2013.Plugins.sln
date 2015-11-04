@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cass.Slack", "Cass.Slack\Cass.Slack.csproj", "{17B9995E-5F88-4CD3-8E35-FBD057B60BB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackCheckIn2013", "SlackCheckIn2013\SlackCheckIn2013.csproj", "{0773AFD1-7199-4464-B852-05FC8754CBC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackTFSIntegration", "SlackTFSIntegration\SlackTFSIntegration.csproj", "{94B4402C-9100-4904-865C-62FED9C45D8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17B9995E-5F88-4CD3-8E35-FBD057B60BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B9995E-5F88-4CD3-8E35-FBD057B60BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B9995E-5F88-4CD3-8E35-FBD057B60BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B9995E-5F88-4CD3-8E35-FBD057B60BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0773AFD1-7199-4464-B852-05FC8754CBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0773AFD1-7199-4464-B852-05FC8754CBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0773AFD1-7199-4464-B852-05FC8754CBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0773AFD1-7199-4464-B852-05FC8754CBC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94B4402C-9100-4904-865C-62FED9C45D8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94B4402C-9100-4904-865C-62FED9C45D8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94B4402C-9100-4904-865C-62FED9C45D8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94B4402C-9100-4904-865C-62FED9C45D8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
