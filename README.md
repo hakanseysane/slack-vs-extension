@@ -2,6 +2,12 @@
 This is a Visual Studio 2013 extension that allows developers to notify their teams of TFS check-ins
 through Slack, without having to make any modification to the TFS server. It works entirely through Visual Studio.
 
+You can get started with the plugin by installing Visual Studio 2013 and
+the extensions SDK, cloning the repo, building it and running the .vsix file in the
+bin folder of the cloned project.
+
+Once it's on the Visual Studio Gallery, it's recommended to download it from there. 
+
 ### How it works
 The extension adds a section to the Pending Changes view of the Team Explorer.
 
