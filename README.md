@@ -13,6 +13,7 @@ The extension adds a section to the Pending Changes view of the Team Explorer.
 
 Choose whether to post the pending check-in to Slack with the Post to Slack? checkbox.
 One can then specify:
+
 1. A Slack Webhook URL. Obtain this from the Integrations section
 of your Slack settings or ask an administrator of your Slack team.
 2. A custom bot name. This can be any name you want. vsbot is a good choice.
