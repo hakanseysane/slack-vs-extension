@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace OregonStateUniversity.SlackCheckIn.Models
 {
+    /// <summary>
+    /// Represents the view state of the SlackChannelView.
+    /// Contains user input fields.
+    /// </summary>
     public class SlackChannelViewModel : INotifyPropertyChanged
     {
         private string m_webhookUrl;

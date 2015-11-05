@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,11 @@ namespace Cass.Slack
         //that we we can generisize the call to slack itself and add good error handling for slack message results in one place.
         //this will allow us to post other slack messages in the future from this same library. Perhaps the TfsChangesetMessage translation
         //belongs in the calling assembly? Not sure.
-        public static Task<HttpResponseMessage> PostToSlack(string requestUri, string channelName,
+
+        /// <summary>
+        /// Posts a TFS check-in to a Slack channel using the given parameters.
+        /// </summary>
+        public static async Task<HttpResponseMessage> PostToSlack(string requestUri, string channelName,
             string userName, string changesetID, int fileChangedCount, string changesetComment, string changesetUrl)
         {
             var message = new SlackMessage
@@ -48,7 +53,17 @@ namespace Cass.Slack
             var content = new StringContent(postBody);
 
             var client = new HttpClient();
-            return client.PostAsync(requestUri, content);
+            var response = await client.PostAsync(requestUri, content);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                var errorMessage = "Error posting to Slack:\n" + response.StatusCode +
+                    " - " + await response.Content.ReadAsStringAsync();
+
+                throw new WebException(errorMessage);
+            }
+
+            return response;
         }
     }
 }

@@ -18,10 +18,13 @@ using System.Windows;
 
 namespace OregonStateUniversity.SlackCheckIn.SlackChannel
 {
-    [TeamExplorerSection(SlackChannelSection.SectionId, TeamExplorerPageIds.PendingChanges, 900)]
+    /// <summary>
+    /// Code-behind for the section of the TFS Pending Changes view that contains the Slack Check-In UI.
+    /// </summary>
+    [TeamExplorerSection(SlackChannelSection.SECTION_ID, TeamExplorerPageIds.PendingChanges, 900)]
     public class SlackChannelSection : ITeamExplorerSection
     {
-        public const string SectionId = "b7e00d7b-be45-482a-882d-35755c38d43d";
+        public const string SECTION_ID = "b7e00d7b-be45-482a-882d-35755c38d43d";
         private object m_sectionContent = null;
         private bool m_isBusy = false;
         private bool m_isExpanded = true;
@@ -62,6 +65,10 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
             return null;
         }
 
+        /// <summary>
+        /// Initializes the section, obtaining service dependencies as available,
+        /// and subscribing to changes in the current team project collection.
+        /// </summary>
         public virtual void Initialize(object sender, SectionInitializeEventArgs e)
         {
             if (!m_isInitialized)
@@ -74,6 +81,10 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
             }
         }
 
+        /// <summary>
+        /// Associates a new version control server (child of a TeamProjectCollection)
+        /// with this instance. Should be called when the TeamProjectCollection changes.
+        /// </summary>
         private void SetVersionControlServer(ITeamFoundationContext tfContext)
         {
             RemoveVersionControlReferences();
@@ -87,10 +98,13 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
 
         private void ContextManager_ContextChanged(object sender, ContextChangedEventArgs e)
         {
-            //the context is changing, so do something about it
             SetVersionControlServer(e.NewContext);
         }
 
+        /// <summary>
+        /// Called when the user checks in a changeset. Posts a summary of
+        /// the most recent check-in to Slack based on user preferences.
+        /// </summary>
         async void VersionControlServer_CommitCheckin(object sender, CommitCheckinEventArgs e)
         {
             // Only post to Slack if user specified we should post to Slack.
@@ -105,7 +119,7 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
                 .GetService<TswaClientHyperlinkService>();
             try
             {
-                var response = await SlackServiceAdapter.PostToSlack(requestUri: m_viewModel.WebhookUrl,
+                await SlackServiceAdapter.PostToSlack(requestUri: m_viewModel.WebhookUrl,
                     channelName: m_viewModel.Channel,
                     userName: e.Workspace.OwnerDisplayName,
                     changesetID: e.ChangesetId.ToString(),
@@ -113,21 +127,16 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
                     changesetComment: pendingChanges.CheckinComment,
                     changesetUrl: hyperlinkService.GetChangesetDetailsUrl(e.ChangesetId).ToString());
 
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    ShowNotification(string.Format("Successfully posted changeset {0} to Slack.", e.ChangesetId), NotificationType.Information);
-                }
-                else
-                {
-                    var errorMessage = "Error posting to Slack:\n" + response.StatusCode +
-                        " - " + await response.Content.ReadAsStringAsync();
-                    ShowNotification(errorMessage, NotificationType.Error);
-                }
+                m_viewModel.NotificationMessage = string.Format("Successfully posted changeset {0} to Slack.", e.ChangesetId);
+            }
+            catch (WebException ex)
+            {
+                m_viewModel.NotificationMessage = ex.ToString();
+                
             }
             catch
             {
-                var errorMessage = "Error posting to Slack. The check-in still occurred. Look for an issue with your Post Check-In to Slack parameters before checking in again.";
-                ShowNotification(errorMessage, NotificationType.Error);
+                m_viewModel.NotificationMessage = "Error posting to Slack. The check-in still occurred. Look for an issue with your Post Check-In to Slack parameters before checking in again.";
             }
         }
 
@@ -235,6 +244,10 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
             }
         }
 
+        /// <summary>
+        /// Removes the check-in event handler and version control server reference for
+        /// the version control server associated with this instance.
+        /// </summary>
         private void RemoveVersionControlReferences()
         {
             if (m_vcServer != null)
@@ -253,14 +266,6 @@ namespace OregonStateUniversity.SlackCheckIn.SlackChannel
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
-        }
-
-        private void ShowNotification(string message, NotificationType type)
-        {
-            if (m_viewModel != null)
-            {
-                m_viewModel.NotificationMessage = message;
             }
         }
 
